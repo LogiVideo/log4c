@@ -347,17 +347,17 @@ namespace
 
 		// Print the message using the following order:
 		//   1. Color code
-		//   2. Rendered message with "\r\n" removed
+		//   2. Rendered message with "\n" removed
 		//   3. Color reset code
-		//   4. "\r\n"
+		//   4. "\n"
 		// Printing everything in a single call and printing the color reset code before the newline
 		// increases resilience against accidentally coloring output that is not from log4c,
 		// especially in the case where stderr and stdout are both being output to.
-		// Note that, by convention, the rendered message ends with "\r\n".
+		// Note that, by convention, the rendered message ends with "\n".
 		{
 			const auto msgLen = static_cast<int>(strlen(a_event->evt_rendered_msg));
-			const auto truncLen = msgLen >= 2 ? 2 : 0;
-			ret = fprintf(udata->fh_, "%s%.*s%s\r\n",
+			const auto truncLen = msgLen >= 1 ? 1 : 0;
+			ret = fprintf(udata->fh_, "%s%.*s%s\n",
 				udata->colorState_->GetCategoryAnsiColorString(a_event->evt_category),
 				msgLen - truncLen, a_event->evt_rendered_msg,
 				ResetColorString

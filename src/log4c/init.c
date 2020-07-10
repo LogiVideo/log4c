@@ -258,7 +258,7 @@ void __log4c_reread(void)
 		if (rcfiles[i].exists && SD_STAT_CTIME(rcfiles[i].name,&file_ctime) == 0){
 			/* time_t is number of second since epoch, just compare for == */
 			if (file_ctime != rcfiles[i].ctime){
-				sd_debug("Need reread on file %s\r\n",rcfiles[i].name);
+				sd_debug("Need reread on file %s\n",rcfiles[i].name);
 				SD_STAT_CTIME(rcfiles[i].name,&rcfiles[i].ctime);
 				if (log4c_rc_load(log4c_rc, rcfiles[i].name) == -1){
 					sd_error("re-loading config file %s failed", rcfiles[i].name);
@@ -396,7 +396,7 @@ extern void log4c_dump_all_instances(FILE *fp){
 	* /usr/tmp.  They are both of type rollingfile, but are distinct instances of
 	* it
 	*/
-	fprintf(fp, "instance dump follows (may be empty):\r\n");
+	fprintf(fp, "instance dump follows (may be empty):\n");
 	sd_factory_print(log4c_category_factory, fp);
 	sd_factory_print(log4c_appender_factory, fp);
 	sd_factory_print(log4c_layout_factory, fp);

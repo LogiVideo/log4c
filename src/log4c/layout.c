@@ -55,7 +55,7 @@ extern void log4c_layout_types_print(FILE *fp)
    {
       fprintf(fp, "'%s' ",((log4c_layout_type_t *)(i->data))->name );
    }
-  fprintf(fp, "\r\n");
+  fprintf(fp, "\n");
 }
 
 /*******************************************************************************/

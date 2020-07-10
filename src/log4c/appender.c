@@ -60,7 +60,7 @@ extern void log4c_appender_types_print(FILE *fp)
   {
     fprintf(fp, "'%s' ",((log4c_appender_type_t *)(i->data))->name );
   }
-  fprintf(fp, "\r\n");
+  fprintf(fp, "\n");
 }
 
 /*******************************************************************************/
