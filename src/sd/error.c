@@ -20,8 +20,8 @@ static const char version[] = "$Id$";
 #  endif
 #endif
 
-#include <sd/error.h>
-#include <sd_xplatform.h>
+#include "error.h"
+#include "sd_xplatform.h"
 
 int sd_debug(const char *fmt, ...)
 {

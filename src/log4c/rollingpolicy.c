@@ -52,7 +52,7 @@ extern void log4c_rollingpolicy_types_print(FILE *fp)
   {
     fprintf(fp, "'%s' ",((log4c_rollingpolicy_type_t *)(i->data))->name );
   }
-  fprintf(fp, "\n");
+  fprintf(fp, "\r\n");
 }
 
 /*******************************************************************************/
@@ -192,7 +192,7 @@ LOG4C_API int log4c_rollingpolicy_is_triggering_event(log4c_rollingpolicy_t* thi
 }
 /*******************************************************************************/
 
-LOG4C_API int log4c_rollingpolicy_rollover(log4c_rollingpolicy_t* this, FILE **fpp){
+LOG4C_API int log4c_rollingpolicy_rollover(log4c_rollingpolicy_t* this, FILE **fpp, int isroll){
   
   if (!this)
     return -1;
@@ -203,7 +203,7 @@ LOG4C_API int log4c_rollingpolicy_rollover(log4c_rollingpolicy_t* this, FILE **f
   if (!this->policy_type->rollover)
     return 0;
   
-  return this->policy_type->rollover(this, fpp);
+  return this->policy_type->rollover(this, fpp, isroll);
 }
 /*******************************************************************************/
 

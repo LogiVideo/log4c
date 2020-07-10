@@ -24,6 +24,7 @@ liblog4c_sd_la_SOURCES = \
         test.c \
         sd_xplatform.h \
         sd_xplatform.c \
+        stringutil.c \
 	error.c
 
 liblog4c_sd_la_LDFLAGS = $(EXPAT_LIBS)

@@ -29,7 +29,7 @@
 
 #include <stdarg.h>
 #include <stddef.h>
-#include <sd/defs.h>
+#include "defs.h"
 
 __SD_BEGIN_DECLS
 
@@ -37,21 +37,21 @@ __SD_BEGIN_DECLS
  * Same as fprintf(3) with auto-allocation of the resulting buffer,
  * and output directly in a file, not a stream.
  */
-extern int sd_fprintf(int fd, const char *fmt, ...);
+SD_API int sd_fprintf(int fd, const char *fmt, ...);
 
 /**
  * Same as sprintf(3) with auto-allocation of the resulting buffer.
  */
-extern char* sd_sprintf(const char* a_fmt, ...);
+SD_API char* sd_sprintf(const char* a_fmt, ...);
 
 /**
  * Same as vsprintf(3) with auto-allocation of the resulting buffer.
  */
-extern char* sd_vsprintf(const char* a_fmt, va_list a_arg);
+SD_API char* sd_vsprintf(const char* a_fmt, va_list a_arg);
 
 #if defined(__osf__)
-extern int snprintf(char* str, size_t size, const char* fmt, ...);
-extern int vsnprintf(char* str, size_t size, const char* fmt, va_list arg);
+SD_API int snprintf(char* str, size_t size, const char* fmt, ...);
+SD_API int vsnprintf(char* str, size_t size, const char* fmt, va_list arg);
 #endif
 
 __SD_END_DECLS

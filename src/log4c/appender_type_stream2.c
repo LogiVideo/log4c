@@ -58,7 +58,7 @@ static int stream2_open(log4c_appender_t* this)
     flags = s2up->s2u_flags;    
     
     if ( !fp ) {
-	if ( (fp = fopen(log4c_appender_get_name(this), "w+")) == NULL){
+	if ( (fp = fopen(log4c_appender_get_name(this), "a+b")) == NULL){
 	    fp = stderr;
 	} else {
 	    s2up->s2u_state |= STREAM2_MY_FP;

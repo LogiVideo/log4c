@@ -20,7 +20,7 @@ static int stream_open(log4c_appender_t* this)
     if (fp)
 	return 0;
     
-    if ( (fp = fopen(log4c_appender_get_name(this), "w+")) == NULL)
+    if ( (fp = fopen(log4c_appender_get_name(this), "a+b")) == NULL)
 	fp = stderr;
     
     /* unbuffered mode */

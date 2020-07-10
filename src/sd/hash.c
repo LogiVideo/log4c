@@ -9,8 +9,8 @@ static const char version[] = "$Id$";
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sd/hash.h>
-#include <sd/malloc.h>
+#include "hash.h"
+#include "malloc.h"
 
 #define SD_HASH_FULLTAB	2	/* rehash when table gets this x full */
 #define SD_HASH_GROWTAB 4	/* grow table by this factor */
@@ -57,7 +57,7 @@ static void rehash(sd_hash_t* a_this)
 }
 
 /******************************************************************************/
-extern sd_hash_t* sd_hash_new(size_t a_size, const sd_hash_ops_t* a_ops)
+SD_API sd_hash_t* sd_hash_new(size_t a_size, const sd_hash_ops_t* a_ops)
 {
     const static sd_hash_ops_t default_ops = {
 	(void*) &sd_hash_hash_string,
@@ -88,7 +88,7 @@ extern sd_hash_t* sd_hash_new(size_t a_size, const sd_hash_ops_t* a_ops)
 }
 
 /******************************************************************************/
-extern sd_hash_iter_t* sd_hash_lookup(sd_hash_t* a_this, const void* a_key)
+SD_API sd_hash_iter_t* sd_hash_lookup(sd_hash_t* a_this, const void* a_key)
 {
     int			h;
     sd_hash_iter_t*	p;
@@ -105,7 +105,7 @@ extern sd_hash_iter_t* sd_hash_lookup(sd_hash_t* a_this, const void* a_key)
 }
 
 /******************************************************************************/
-extern sd_hash_iter_t* sd_hash_lookadd(sd_hash_t* a_this, const void* a_key)
+SD_API sd_hash_iter_t* sd_hash_lookadd(sd_hash_t* a_this, const void* a_key)
 {
     int			h;
     sd_hash_iter_t*	p;
@@ -136,7 +136,7 @@ extern sd_hash_iter_t* sd_hash_lookadd(sd_hash_t* a_this, const void* a_key)
 }
 
 /******************************************************************************/
-extern sd_hash_iter_t* sd_hash_add(sd_hash_t* a_this, const void* a_key,
+SD_API sd_hash_iter_t* sd_hash_add(sd_hash_t* a_this, const void* a_key,
 				   void* a_data)
 {
     sd_hash_iter_t* p;
@@ -154,7 +154,7 @@ extern sd_hash_iter_t* sd_hash_add(sd_hash_t* a_this, const void* a_key,
 }
 
 /******************************************************************************/
-extern void sd_hash_delete(sd_hash_t* a_this)
+SD_API void sd_hash_delete(sd_hash_t* a_this)
 {
     sd_hash_clear(a_this);
     free(a_this->tab);
@@ -162,7 +162,7 @@ extern void sd_hash_delete(sd_hash_t* a_this)
 }
 
 /******************************************************************************/
-extern void sd_hash_clear(sd_hash_t* a_this)
+SD_API void sd_hash_clear(sd_hash_t* a_this)
 {
     size_t		h;
     sd_hash_iter_t*	p;
@@ -183,7 +183,7 @@ extern void sd_hash_clear(sd_hash_t* a_this)
 }
 
 /******************************************************************************/
-extern void sd_hash_del(sd_hash_t* a_this, const void* a_key)
+SD_API void sd_hash_del(sd_hash_t* a_this, const void* a_key)
 {
     int			h;
     sd_hash_iter_t*	p;
@@ -197,7 +197,7 @@ extern void sd_hash_del(sd_hash_t* a_this, const void* a_key)
 }
 
 /******************************************************************************/
-extern void sd_hash_foreach(sd_hash_t* a_this, sd_hash_func_t a_func,
+SD_API void sd_hash_foreach(sd_hash_t* a_this, sd_hash_func_t a_func,
 			    void* a_data)
 {
     size_t			h, ret;
@@ -222,21 +222,21 @@ extern void sd_hash_foreach(sd_hash_t* a_this, sd_hash_func_t a_func,
 }
 
 /******************************************************************************/
-extern unsigned int sd_hash_get_nelem(sd_hash_t* a_this)
+SD_API unsigned int sd_hash_get_nelem(sd_hash_t* a_this)
 {
     if (a_this == 0) return 0;
     return a_this->nelem;
 }
 
 /******************************************************************************/
-extern unsigned int sd_hash_get_size(sd_hash_t* a_this)
+SD_API unsigned int sd_hash_get_size(sd_hash_t* a_this)
 {
     if (a_this == 0) return 0;
     return a_this->size;
 }
 
 /******************************************************************************/
-extern sd_hash_iter_t* sd_hash_begin(sd_hash_t* a_this)
+SD_API sd_hash_iter_t* sd_hash_begin(sd_hash_t* a_this)
 {
     size_t h;
     
@@ -249,13 +249,13 @@ extern sd_hash_iter_t* sd_hash_begin(sd_hash_t* a_this)
 }
 
 /******************************************************************************/
-extern sd_hash_iter_t* sd_hash_end(sd_hash_t* a_this)
+SD_API sd_hash_iter_t* sd_hash_end(sd_hash_t* a_this)
 {
     return 0;
 }
 
 /******************************************************************************/
-extern sd_hash_iter_t* sd_hash_iter_next(sd_hash_iter_t* a_this)
+SD_API sd_hash_iter_t* sd_hash_iter_next(sd_hash_iter_t* a_this)
 {
     int h;
 	size_t i;
@@ -273,7 +273,7 @@ extern sd_hash_iter_t* sd_hash_iter_next(sd_hash_iter_t* a_this)
 }
 
 /******************************************************************************/
-extern sd_hash_iter_t* sd_hash_iter_prev(sd_hash_iter_t* a_this)
+SD_API sd_hash_iter_t* sd_hash_iter_prev(sd_hash_iter_t* a_this)
 {
     int			h, i;
     sd_hash_iter_t*	p;
@@ -292,7 +292,7 @@ extern sd_hash_iter_t* sd_hash_iter_prev(sd_hash_iter_t* a_this)
 }
 
 /******************************************************************************/
-extern void sd_hash_iter_del(sd_hash_iter_t* a_this)
+SD_API void sd_hash_iter_del(sd_hash_iter_t* a_this)
 {
     if (a_this == 0) return;
     
@@ -322,7 +322,7 @@ extern void sd_hash_iter_del(sd_hash_iter_t* a_this)
 }
 
 /******************************************************************************/
-extern unsigned int sd_hash_hash_string(const char* a_string)
+SD_API unsigned int sd_hash_hash_string(const char* a_string)
 {
     register unsigned int h;
     

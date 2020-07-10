@@ -34,10 +34,10 @@ static const char version[] = "$Id$";
 #include "config.h"
 #endif
 
-#include <sd/domnode.h>
-#include <sd/stack.h>
-#include <sd/malloc.h>
-#include <sd/error.h>
+#include "domnode.h"
+#include "stack.h"
+#include "malloc.h"
+#include "error.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -48,7 +48,9 @@ static const char version[] = "$Id$";
 #endif
 
 #include <assert.h>
+#ifdef HAVE_EXPAT
 #include <expat.h>
+#endif HAVE_EXPAT
 
 struct udata {
     char 	  cdata[2048];
@@ -132,7 +134,7 @@ static int foreach_delete(sd_domnode_t* anode, void* unused)
 }
 
 /******************************************************************************/
-extern sd_domnode_t* 
+SD_API sd_domnode_t* 
 __sd_domnode_new(const char* name, const char* value, int is_elem)
 {
     sd_domnode_t* this;
@@ -148,13 +150,13 @@ __sd_domnode_new(const char* name, const char* value, int is_elem)
 }
 
 /******************************************************************************/
-extern sd_domnode_t* sd_domnode_new(const char* name, const char* value)
+SD_API sd_domnode_t* sd_domnode_new(const char* name, const char* value)
 {
     return __sd_domnode_new(name, value, 1);
 }
 
 /******************************************************************************/
-extern void sd_domnode_delete(sd_domnode_t* this)
+SD_API void sd_domnode_delete(sd_domnode_t* this)
 {
     if (!this)
 	return;
@@ -230,7 +232,7 @@ static void comment_handler(struct udata* udata, const XML_Char* s)
 }
 
 /******************************************************************************/
-extern int sd_domnode_fread(sd_domnode_t* this, FILE* stream)
+SD_API int sd_domnode_fread(sd_domnode_t* this, FILE* stream)
 {
     XML_Parser   p;
     struct udata* udata;
@@ -303,7 +305,7 @@ extern int sd_domnode_fread(sd_domnode_t* this, FILE* stream)
 }
 
 /******************************************************************************/
-extern int 
+SD_API int 
 sd_domnode_read(sd_domnode_t* this, const char* abuffer, size_t asize)
 {
     XML_Parser  p;
@@ -410,7 +412,7 @@ static int _sd_domnode_fwrite(const sd_domnode_t* this, FILE* stream, int indent
 }
 
 /******************************************************************************/
-extern int sd_domnode_fwrite(const sd_domnode_t* this, FILE* stream)
+SD_API int sd_domnode_fwrite(const sd_domnode_t* this, FILE* stream)
 {
 #ifdef HAVE_NL_LANGINFO
     fprintf(stream, "<?xml version=\"1.0\" encoding=\"%s\"?>\n\n", 
@@ -423,7 +425,7 @@ extern int sd_domnode_fwrite(const sd_domnode_t* this, FILE* stream)
 }
 
 /******************************************************************************/
-extern int sd_domnode_load(sd_domnode_t* this, const char* afilename)
+SD_API int sd_domnode_load(sd_domnode_t* this, const char* afilename)
 {
     FILE* fp;
     int   ret = 0;
@@ -438,7 +440,7 @@ extern int sd_domnode_load(sd_domnode_t* this, const char* afilename)
 }
 
 /******************************************************************************/
-extern int sd_domnode_store(const sd_domnode_t* this, const char* afilename)
+SD_API int sd_domnode_store(const sd_domnode_t* this, const char* afilename)
 {
     FILE* fp;
     int   ret = 0;
@@ -453,7 +455,7 @@ extern int sd_domnode_store(const sd_domnode_t* this, const char* afilename)
 }
 
 /******************************************************************************/
-extern sd_domnode_t* 
+SD_API sd_domnode_t* 
 sd_domnode_search(const sd_domnode_t* this, const char* name)
 {
     sd_list_iter_t* i;
@@ -486,7 +488,7 @@ sd_domnode_search(const sd_domnode_t* this, const char* name)
 }
 
 /******************************************************************************/
-extern sd_domnode_t* 
+SD_API sd_domnode_t* 
 sd_domnode_attrs_put(sd_domnode_t* anode, sd_domnode_t* attr)
 {
     sd_list_iter_t* i;
@@ -501,7 +503,7 @@ sd_domnode_attrs_put(sd_domnode_t* anode, sd_domnode_t* attr)
 }
 
 /******************************************************************************/
-extern sd_domnode_t* 
+SD_API sd_domnode_t* 
 sd_domnode_attrs_get(const sd_domnode_t* anode, const char* name)
 {
     sd_list_iter_t* i;
@@ -521,7 +523,15 @@ sd_domnode_attrs_get(const sd_domnode_t* anode, const char* name)
 }
 
 /******************************************************************************/
-extern sd_domnode_t* 
+SD_API sd_domnode_t* 
+sd_domnode_attrs_get_expanded(const sd_domnode_t* anode, const char* name)
+{
+#error Not implemented
+    return NULL;
+}
+
+/******************************************************************************/
+SD_API sd_domnode_t* 
 sd_domnode_attrs_remove(sd_domnode_t* anode, const char* name)
 {
     sd_list_iter_t* i;

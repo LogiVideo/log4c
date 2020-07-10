@@ -6,8 +6,8 @@ static const char version[] = "$Id$";
  * See the COPYING file for the terms of usage and distribution.
  */
 
-#include <sd/list.h>
-#include <sd/malloc.h>
+#include "list.h"
+#include "malloc.h"
 #include <stdlib.h>
 
 struct __sd_list {

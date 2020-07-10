@@ -9,8 +9,9 @@
 #define __sd_error_h
 
 #include <stdarg.h>
+#include "defs.h"
 
-extern int sd_debug(const char *fmt, ...);
-extern int sd_error(const char *fmt, ...);
+SD_API int sd_debug(const char *fmt, ...);
+SD_API int sd_error(const char *fmt, ...);
 
 #endif /* __sd_error_h */

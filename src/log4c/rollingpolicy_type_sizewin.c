@@ -52,7 +52,7 @@ struct __sizewin_udata {
 /***************************************************************************/
 
 static int sizewin_init(log4c_rollingpolicy_t *this, rollingfile_udata_t* rfup);
-static int sizewin_rollover(log4c_rollingpolicy_t *this, FILE **current_fpp );
+static int sizewin_rollover(log4c_rollingpolicy_t *this, FILE **current_fpp, int isroll);
 static int sizewin_is_triggering_event(
 			       log4c_rollingpolicy_t *this,
 			       const log4c_logging_event_t* a_event,
@@ -99,12 +99,14 @@ static int sizewin_is_triggering_event(
 
 /*******************************************************************************/
 
-static int sizewin_rollover(log4c_rollingpolicy_t *this, FILE ** current_fpp ){
+static int sizewin_rollover(log4c_rollingpolicy_t *this, FILE ** current_fpp , int isroll){
   int rc = 0;
   rollingpolicy_sizewin_udata_t *swup = log4c_rollingpolicy_get_udata(this);
   int k = 0;
   int i = 0;
- 
+  struct stat statbuf;
+  int current_file_size = 0;
+
   sd_debug("sizewin_rollover[");
   /* Starting at the last_index work back renaming the files and
      leaving space for the .0 file.
@@ -131,18 +133,6 @@ static int sizewin_rollover(log4c_rollingpolicy_t *this, FILE ** current_fpp ){
    } else {
      sd_debug("rolling up existing files");
 
-     if ( k == swup->sw_conf.swc_file_max_num_files-1) {    
-       if(unlink(swup->sw_filenames[k])){
-          sd_error("unlink failed"); 
-          rc = 1;
-       } else {
-         k = swup->sw_conf.swc_file_max_num_files-2;
-       }
-     } else {
-       /* not yet reached the max num of files
-	      * so there's still room to rotate the list up */    
-     }
-
      /* If there's a current open fp, close it.*/
      if ( !(swup->sw_flags & SW_LAST_FOPEN_FAILED) && *current_fpp) {
        if(fclose(*current_fpp)){
@@ -158,28 +148,47 @@ static int sizewin_rollover(log4c_rollingpolicy_t *this, FILE ** current_fpp ){
          sd_debug("Not closing current log file...not sure why");
        }
      }
+
+	stat(swup->sw_filenames[0], &statbuf);
+	current_file_size = statbuf.st_size;
+	//if (swup->sw_conf.swc_file_maxsize < current_file_size )
+	if (isroll)
+	{
+		 if ( k == swup->sw_conf.swc_file_max_num_files-1) {    
+		   if(unlink(swup->sw_filenames[k])){
+			  sd_error("unlink failed"); 
+			  rc = 1;
+		   } else {
+			 k = swup->sw_conf.swc_file_max_num_files-2;
+		   }
+		 } else {
+		   /* not yet reached the max num of files
+			  * so there's still room to rotate the list up */    
+		 }
+
      /* Now, rotate the list up if all seems ok, otherwise 
      * don't mess with teh files if something seems to have gone wrong
      */
-     if ( !rc){
-       sd_debug("rotate up , last index is %d", k); 
-       i = k;
-       while ( i >= 0 ) {
-         sd_debug("Renaming %s to %s",
-           swup->sw_filenames[i], swup->sw_filenames[i+1]);
-         if(rename( swup->sw_filenames[i], swup->sw_filenames[i+1])){
-           sd_error("rename failed"); 
-           rc = 1;
-           break;
-         }
-         i--;
-       }
-       if ( !rc){
-         swup->sw_last_index = k + 1;
-       }
-     } else {
-       sd_debug("not rotating up--some file access error");
-     }
+		 if ( !rc){
+		   sd_debug("rotate up , last index is %d", k); 
+		   i = k;
+		   while ( i >= 0 ) {
+			 sd_debug("Renaming %s to %s",
+			   swup->sw_filenames[i], swup->sw_filenames[i+1]);
+			 if(rename( swup->sw_filenames[i], swup->sw_filenames[i+1])){
+			   sd_error("rename failed"); 
+			   rc = 1;
+			   break;
+			 }
+			 i--;
+		   }
+		   if ( !rc){
+			 swup->sw_last_index = k + 1;
+		   }
+		 } else {
+		   sd_debug("not rotating up--some file access error");
+		 }
+	}
          
      /* Now open up the 0'th file for writing */
      if (sizewin_open_zero_file(swup->sw_filenames[0], current_fpp)){
@@ -340,20 +349,22 @@ static char **sizewin_make_filename_array(rollingpolicy_sizewin_udata_t *swup){
 
 /****************************************************************************/
 
-static char* sizewin_get_filename_by_index(rollingpolicy_sizewin_udata_t* swup,
-					   long i){
-  char tmp[100];
-  long filename_len = 0;
-  char *s = NULL;
-  
-  sprintf(tmp, "%ld", i);
-  filename_len = strlen(swup->sw_logdir) + 1 +
-    strlen(swup->sw_files_prefix) + 1 +
-    strlen(tmp) + 1 + 10; /* a margin */
-  s = (char *)malloc(filename_len);      
-  sprintf( s, "%s%s%s%s%s", swup->sw_logdir,
-	   FILE_SEP, swup->sw_files_prefix, ".", tmp);	      
-  return(s); 
+static char* sizewin_get_filename_by_index(rollingpolicy_sizewin_udata_t* swup, long i)
+{
+	char tmp[100];
+	long filename_len = 0;
+	char *s = NULL;
+
+	sprintf(tmp, "%ld", i);
+	filename_len = strlen(swup->sw_logdir) + 1 +
+		strlen(swup->sw_files_prefix) + 1 +
+		strlen(tmp) + 1 + 10; /* a margin */
+	s = (char *)malloc(filename_len);      
+	if( s != NULL ){
+		sprintf( s, "%s%s%s%s%s", swup->sw_logdir,
+			FILE_SEP, swup->sw_files_prefix, tmp, ".txt");
+	}
+	return(s); 
 }
 
 /****************************************************************************/
@@ -390,7 +401,7 @@ static int sizewin_open_zero_file(char *filename, FILE **fpp ){
   int rc = 0;
   sd_debug("sizewin_open_zero_file['%s'", filename);
 
-  if ( (*fpp = fopen(filename, "w+")) == NULL){
+  if ( (*fpp = fopen(filename, "a+b")) == NULL){
    sd_error("failed to open zero file '%s'--defaulting to stderr--error='%s'",
      filename, strerror(errno));    
    *fpp = stderr;

@@ -21,10 +21,21 @@ static const char* basic_format(
 {
     static char buffer[1024];
 
-    snprintf(buffer, sizeof(buffer), "%-8s %s - %s\n",
+    int res = snprintf(buffer, sizeof(buffer), "%-8s %s - %s\r\n",
 	     log4c_priority_to_string(a_event->evt_priority),
 	     a_event->evt_category, a_event->evt_msg);
     
+	/* If the output was truncated ellipsize the message and line-terminate it */
+	if(res >= sizeof(buffer))
+	{
+		buffer[sizeof(buffer) - 6] =
+		buffer[sizeof(buffer) - 5] =
+		buffer[sizeof(buffer) - 4] = '.';
+		buffer[sizeof(buffer) - 3] = '\r';
+		buffer[sizeof(buffer) - 2] = '\n';
+		buffer[sizeof(buffer) - 1] = '\0';
+	}
+
     return buffer;
 }
 

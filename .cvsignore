@@ -1,9 +1,0 @@
-Makefile
-config.status
-libtool
-config.cache
-config.log
-configure
-Makefile.in
-aclocal.m4
-autom4te*.cache

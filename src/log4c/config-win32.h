@@ -12,7 +12,6 @@
 
 #include <time.h>
 #include <windows.h>
-#include <winsock.h>
 
 #undef LOG4C_API
 #ifdef LOG4C_EXPORTS

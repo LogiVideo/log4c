@@ -78,15 +78,14 @@ static int xml_fwrite(const sd_domnode_t* this, FILE* a_stream, int a_indent)
 }
 
 /******************************************************************************/
-extern int __sd_domnode_xml_write(const sd_domnode_t* this, char** a_buffer,
-				  size_t* a_size)
+SD_API int __sd_domnode_xml_write(const sd_domnode_t* a_node, char** a_buffer, size_t* a_size)
 {
-    /* TODO: to be implemented */
-    return -1;
+	/* TODO: to be implemented */
+	return -1;
 }
 
 /******************************************************************************/
-extern int __sd_domnode_xml_fwrite(const sd_domnode_t* this, FILE* a_stream)
+SD_API int __sd_domnode_xml_fwrite(const sd_domnode_t* this, FILE* a_stream)
 {
 #ifdef HAVE_NL_LANGINFO
     fprintf(a_stream, "<?xml version=\"1.0\" encoding=\"%s\"?>\n\n",
@@ -116,7 +115,7 @@ static int xml_parse(sd_domnode_t** a_node, yyscan_t a_scanner)
 }
 
 /******************************************************************************/
-extern int __sd_domnode_xml_fread(sd_domnode_t** a_node, FILE* a_stream)
+SD_API int __sd_domnode_xml_fread(sd_domnode_t** a_node, FILE* a_stream)
 {
     int r;
     yyscan_t scanner;
@@ -132,7 +131,7 @@ extern int __sd_domnode_xml_fread(sd_domnode_t** a_node, FILE* a_stream)
 }
 
 /******************************************************************************/
-extern int __sd_domnode_xml_read(sd_domnode_t** a_node, const char* a_buffer,
+SD_API int __sd_domnode_xml_read(sd_domnode_t** a_node, const char* a_buffer,
 				 size_t a_size)
 {
     int r;

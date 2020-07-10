@@ -28,7 +28,7 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <sd/error.h>
+#include "error.h"
 
 #if defined(__APPLE__)
 # include <sys/time.h>
