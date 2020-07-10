@@ -12,6 +12,8 @@ liblog4c_la_SOURCES = \
 	appender_type_syslog.c \
 	appender_type_socket.c \
 	appender_type_mmap.c \
+	appender_type_ansicolor.cpp \
+	appender_type_file.cpp \
 	layout_type_basic.c \
 	layout_type_dated.c \
 	layout_type_basic_r.c \
