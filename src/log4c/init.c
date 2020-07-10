@@ -21,6 +21,7 @@ static const char version[] = "$Id$";
 #include <sd/sprintf.h>
 #include <sd/factory.h>
 #include <sd/sd_xplatform.h>
+#include <sd/stringutil.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h> 
@@ -94,8 +95,8 @@ typedef struct rcfile
 } rcfile_t;
 
 static rcfile_t rcfiles[] = {
-	//{ "$LOG4C_RCPATH/log4crc" },
-	//{  "$HOME/.log4crc" },
+	{ "${LOG4C_RCPATH}/log4crc" },
+	{ "${HOME}/.log4crc" },
 	{ "./log4crc" }
 };
 
@@ -168,6 +169,21 @@ extern int log4c_init(void)
 #endif
 
 	/* load configuration files */
+	{
+		sd_debug("expanding variables in config path candidates");
+		for (i = 0; i < nrcfiles; i++) {
+			char *expanded_name = expand_variables(rcfiles[i].name);
+			if(expanded_name) {
+				sd_debug("  '%s' => '%s'", rcfiles[i].name, expanded_name);
+				strncpy(rcfiles[i].name, expanded_name, sizeof(rcfiles[i].name) - 1);
+				rcfiles[i].name[sizeof(rcfiles[i].name) - 1] = '\0';
+				free(expanded_name);
+			}
+			else {
+				sd_error("error while expanding variables in config path candidate '%s'", rcfiles[i].name);
+			}
+		}
+	}
 	{
 		/* MR: If there's an environment variable called 'LOG4C_RCFILE' use it
 		 * as the config file and don't try to read any others. */
