@@ -64,6 +64,8 @@ if test "x$GCC" = "xyes"; then
   esac
 fi
 
+CPPFLAGS="$CPPFLAGS -std=c++11"
+
 ##########################
 # Enable debug if required
 # 

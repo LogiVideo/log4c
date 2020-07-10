@@ -43,6 +43,9 @@ static const char version[] = "$Id$";
 #include <mcheck.h>
 #endif
 
+const log4c_appender_type_t log4c_appender_type_file;
+const log4c_appender_type_t log4c_appender_type_ansicolor;
+
 static const log4c_layout_type_t * const layout_types[] = {
 	&log4c_layout_type_basic
 	,&log4c_layout_type_dated
@@ -69,6 +72,8 @@ static const log4c_appender_type_t * const appender_types[] = {
 	,&log4c_appender_type_rollingfile
 #endif
 	,&log4c_appender_type_socket
+	,&log4c_appender_type_file
+	,&log4c_appender_type_ansicolor
 };
 static size_t nappender_types = sizeof(appender_types) / sizeof(appender_types[0]);
 
