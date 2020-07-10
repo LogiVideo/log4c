@@ -10,12 +10,17 @@ static const char version[] = "$Id$";
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
-#include <sd/sprintf.h>
-#include <sd/malloc.h>
-#include <sd/sd_xplatform.h>
+#include "sprintf.h"
+#include "malloc.h"
+#include "sd_xplatform.h"
+
+#ifndef va_copy
+#pragma message("va_copy not defined for this platform.  The following implementation may not work correctly.")
+#define va_copy(d, s)  d = s
+#endif
 
 /******************************************************************************/
-extern char* sd_sprintf(const char* a_fmt, ...)
+SD_API char* sd_sprintf(const char* a_fmt, ...)
 {
     char*	buffer;
     va_list	args;
@@ -28,13 +33,19 @@ extern char* sd_sprintf(const char* a_fmt, ...)
 }
 
 /******************************************************************************/
-extern char* sd_vsprintf(const char* a_fmt, va_list a_args)
+SD_API char* sd_vsprintf(const char* a_fmt, va_list a_args)
 {
     int		size	= 1024;
-    char*	buffer  = sd_calloc(size, sizeof(char));
-    
-    while (1) {
-	int n = vsnprintf(buffer, size, a_fmt, a_args);
+    char*	buffer  = (char*)sd_calloc(size, sizeof(char));
+    int		n		= 0;
+
+	while (buffer) {
+	/* Make a copy of the va_list, so that we can reuse it on subsequent
+	   iterations. */
+	va_list ap_local;
+	va_copy(ap_local, a_args);
+	n = vsnprintf(buffer, size, a_fmt, ap_local);
+	va_end(ap_local);
 	
 	/* If that worked, return */
 	if (n > -1 && n < size)
@@ -46,8 +57,10 @@ extern char* sd_vsprintf(const char* a_fmt, va_list a_args)
 	else            /* twice the old size */
 	    size *= 2;      
 	
-	buffer = sd_realloc(buffer, size);
+	buffer = (char*)sd_realloc(buffer, size);
     }
+
+    return 0;
 }
 
 #if defined(__osf__)

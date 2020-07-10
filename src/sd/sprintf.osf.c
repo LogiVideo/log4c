@@ -5,9 +5,12 @@ static const char ident[] = "$Id$";
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
+#include "defs.h"
+
+#if defined(__osf__)
 
 /******************************************************************************/
-extern int snprintf(char* s, size_t maxlen, const char* fmt, ...)
+SD_API int snprintf(char* s, size_t maxlen, const char* fmt, ...)
 {
     int		len;
     va_list	args;
@@ -20,7 +23,7 @@ extern int snprintf(char* s, size_t maxlen, const char* fmt, ...)
 }
 
 /******************************************************************************/
-extern int vsnprintf(char* s, size_t maxlen, const char* fmt, va_list args)
+SD_API int vsnprintf(char* s, size_t maxlen, const char* fmt, va_list args)
 {
     int  len;
     FILE f;
@@ -34,7 +37,9 @@ extern int vsnprintf(char* s, size_t maxlen, const char* fmt, va_list args)
 
     f._bufsiz  = f._cnt = maxlen - 1;
     f._base    = f._ptr = (unsigned char*) s;
+#ifndef _WIN32
     f._bufendp = f._base + f._bufsiz;
+#endif
 
     len = vfprintf(&f, fmt, args);
     *f._ptr = '\0';
@@ -42,3 +47,4 @@ extern int vsnprintf(char* s, size_t maxlen, const char* fmt, va_list args)
     return len;
 }
 
+#endif

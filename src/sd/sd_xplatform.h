@@ -36,15 +36,15 @@
 #endif
 
 #include <log4c/defs.h>
-#include <sd/defs.h>
+#include "defs.h"
 
 
 /*extern int sd_optind; */
 LOG4C_DATA int sd_optind; 
 
-extern void getopt_reset(void); 
+SD_API void getopt_reset(void); 
 
-extern int sd_getopt(int argc, char *const *argv, const char *opts);
+SD_API int sd_getopt(int argc, char *const *argv, const char *opts);
 
 #ifdef _WIN32
 #define SD_GETOPT(a,b,c) sd_getopt(a,b,c)
@@ -57,10 +57,10 @@ extern int sd_getopt(int argc, char *const *argv, const char *opts);
 
 #ifdef _WIN32
 #define SD_GETTIMEOFDAY(a,b) sd_gettimeofday(a,b)
-extern int sd_gettimeofday(LPFILETIME lpft, void* tzp);
+SD_API int sd_gettimeofday(LPFILETIME lpft, void* tzp);
 #else
 #define SD_GETTIMEOFDAY(a,b) gettimeofday(a,b)
-extern int sd_gettimeofday(struct timeval* tp, void* tzp);
+SD_API int sd_gettimeofday(struct timeval* tp, void* tzp);
 #endif
 
 #ifdef _WIN32

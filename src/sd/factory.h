@@ -14,7 +14,7 @@
  */
 
 #include <stdio.h>
-#include <sd/defs.h>
+#include "defs.h"
 
 __SD_BEGIN_DECLS
 
@@ -29,13 +29,13 @@ struct __sd_factory_ops
 };
 typedef struct __sd_factory_ops sd_factory_ops_t;
 
-extern sd_factory_t* sd_factory_new(const char* a_name, 
+SD_API sd_factory_t* sd_factory_new(const char* a_name, 
 				    const sd_factory_ops_t* a_ops);
-extern void	sd_factory_delete(sd_factory_t* a_this);
-extern void*	sd_factory_get(sd_factory_t* a_this, const char* a_name);
-extern void	sd_factory_destroy(sd_factory_t* a_this, void* a_pr);
-extern void	sd_factory_print(const sd_factory_t* a_this, FILE* a_stream);
-extern int	sd_factory_list(const sd_factory_t* a_this, void** a_items,
+SD_API void	sd_factory_delete(sd_factory_t* a_this);
+SD_API void*	sd_factory_get(sd_factory_t* a_this, const char* a_name);
+SD_API void	sd_factory_destroy(sd_factory_t* a_this, void* a_pr);
+SD_API void	sd_factory_print(const sd_factory_t* a_this, FILE* a_stream);
+SD_API int	sd_factory_list(const sd_factory_t* a_this, void** a_items,
 				int a_nitems);
 
 __SD_END_DECLS

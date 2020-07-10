@@ -9,10 +9,10 @@ static const char version[] = "$Id$";
 #ifdef HAVE_CONFIG_H
 #       include "config.h"
 #endif
-#include <sd/test.h>
-#include <sd/malloc.h>
-#include <sd/sprintf.h>
-#include <sd/sd_xplatform.h>
+#include "test.h"
+#include "malloc.h"
+#include "sprintf.h"
+#include "sd_xplatform.h"
  
 #include <stdlib.h>
 #include <string.h>

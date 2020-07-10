@@ -5,6 +5,8 @@ if TEST
 TEST_SUBDIR = tests
 endif
 
+ACLOCAL_AMFLAGS = -I config
+
 SUBDIRS = config src ${DOC_SUBDIR} ${TEST_SUBDIR} examples
 
 DIST_SUBDIRS = config src doc tests examples

@@ -22,12 +22,12 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */ 
 
-#include <sd/stack.h>
+#include "stack.h"
 #include <stdlib.h>
 #include <limits.h>
 #include <assert.h>
 
-#include <sd/malloc.h>
+#include "malloc.h"
 
 #define SD_STACK_INIT_SIZE 32
 

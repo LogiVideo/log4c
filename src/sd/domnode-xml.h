@@ -22,12 +22,10 @@ struct __sd_domnode_xml_maker {
     sd_domnode_t*	root;
 };
 
-extern int __sd_domnode_xml_fread(sd_domnode_t** a_node, FILE* a_stream);
-extern int __sd_domnode_xml_fwrite(const sd_domnode_t* a_node, FILE* a_stream);
+SD_API int __sd_domnode_xml_fread(sd_domnode_t** a_node, FILE* a_stream);
+SD_API int __sd_domnode_xml_fwrite(const sd_domnode_t* a_node, FILE* a_stream);
 
-extern int __sd_domnode_xml_read(sd_domnode_t** a_node, const char* a_buffer,
-				 size_t a_size);
-extern int __sd_domnode_xml_write(const sd_domnode_t* a_node, char** a_buffer,
-				  size_t* a_size);
+SD_API int __sd_domnode_xml_read(sd_domnode_t** a_node, const char* a_buffer, size_t a_size);
+SD_API int __sd_domnode_xml_write(const sd_domnode_t* a_node, char** a_buffer, size_t* a_size);
 
 #endif

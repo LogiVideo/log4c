@@ -32,7 +32,8 @@ struct __log4c_rollingpolicy;
 typedef struct __log4c_rollingpolicy log4c_rollingpolicy_t;
 
 
-#define ROLLINGFILE_DEFAULT_LOG_DIR "."
+//#define ROLLINGFILE_DEFAULT_LOG_DIR "."
+#define ROLLINGFILE_DEFAULT_LOG_DIR "DoesNotExist123456789" //We don't want default log dir
 #define ROLLINGFILE_DEFAULT_LOG_PREFIX "log"
 
 typedef struct __rollingfile_udata rollingfile_udata_t; /* opaque */
@@ -56,7 +57,7 @@ typedef struct log4c_rollingpolicy_type {
   int (*is_triggering_event)( log4c_rollingpolicy_t* a_policy,
 			      const log4c_logging_event_t*,
 			      long current_file_size );
-  int (*rollover)(log4c_rollingpolicy_t* a_policy, FILE **);  
+  int (*rollover)(log4c_rollingpolicy_t* a_policy, FILE **, int);  
   int (*fini)(log4c_rollingpolicy_t *a_this);
 } log4c_rollingpolicy_type_t;
 
@@ -146,7 +147,7 @@ LOG4C_API int log4c_rollingpolicy_is_triggering_event(
 
 #define  ROLLINGPOLICY_ROLLOVER_ERR_CAN_LOG 0x05
 LOG4C_API int log4c_rollingpolicy_rollover(log4c_rollingpolicy_t* policyp,
-                                            FILE ** fp);
+                                            FILE ** fp, int isroll);
 
 /**
  * sets the rolling policy type

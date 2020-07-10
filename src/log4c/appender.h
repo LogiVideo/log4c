@@ -34,6 +34,13 @@ struct __log4c_appender;
 typedef struct __log4c_appender log4c_appender_t;
 
 /**
+ * @brief log4c appender initialization data
+ **/
+typedef struct log4c_appender_init_data {
+	void *		dom_node;		/* Pointer to a sd_domnode_t (may be NULL) */
+} log4c_appender_init_data_t;
+
+/**
  * @brief log4c appender type class
  *
  * Attributes description:
@@ -48,6 +55,7 @@ typedef struct log4c_appender_type {
     int (*open)	  (log4c_appender_t*);
     int (*append) (log4c_appender_t*, const log4c_logging_event_t*);
     int (*close)  (log4c_appender_t*);
+    int (*init)   (log4c_appender_t*, const log4c_appender_init_data_t*);
 } log4c_appender_type_t;
 
 /**
@@ -160,6 +168,8 @@ LOG4C_API void* log4c_appender_set_udata(log4c_appender_t*	a_appender,
 LOG4C_API const log4c_layout_t* log4c_appender_set_layout(
     log4c_appender_t* a_appender,
     const log4c_layout_t* a_layout);
+
+LOG4C_API int log4c_appender_init(log4c_appender_t* a_appender, const log4c_appender_init_data_t* init_data);
 
 /**
  * opens the appender.

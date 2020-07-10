@@ -10,11 +10,14 @@ liblog4c_la_SOURCES = \
 	appender_type_stream.c \
 	appender_type_stream2.c \
 	appender_type_syslog.c \
+	appender_type_socket.c \
 	appender_type_mmap.c \
 	layout_type_basic.c \
 	layout_type_dated.c \
 	layout_type_basic_r.c \
 	layout_type_dated_r.c \
+	layout_type_null.c \
+	layout_type_ISO8601.c \
 	version.c \
 	logging_event.c \
 	priority.c \
@@ -44,10 +47,13 @@ pkginclude_HEADERS = \
 	layout_type_dated.h \
 	layout_type_basic_r.h \
 	layout_type_dated_r.h \
+	layout_type_null.h \
+	layout_type_ISO8601.h \
 	layout.h \
 	appender_type_stream.h \
 	appender_type_stream2.h \
 	appender_type_syslog.h \
+	appender_type_socket.h \
 	appender_type_mmap.h \
 	appender.h \
 	category.h \

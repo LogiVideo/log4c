@@ -8,7 +8,9 @@ static const char version[] = "$Id$";
 
 #include <stdio.h>
 #include <string.h>
-#include "log4c/defs.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <log4c/defs.h>
 
 #include "sd_xplatform.h"
 
@@ -17,7 +19,7 @@ static const char version[] = "$Id$";
 #define	EOF	(-1)
  
  int sd_opterr = 1;
- int sd_optind = 1;
+ LOG4C_DATA int sd_optind = 1;
  int sd_optopt = 0;
  char *sd_optarg = NULL;
  int _sp = 1;
@@ -111,10 +113,6 @@ int sd_gettimeofday(LPFILETIME lpft, void* tzp) {
 /*
  * Placeholder for WIN32 version to get last changetime of a file
  */
-#ifdef WIN32
-int sd_stat_ctime(const char* path, time_t* time)
-{ return -1; }
-#else
 int sd_stat_ctime(const char* path, time_t* time)
 {
 	struct stat astat;
@@ -123,9 +121,9 @@ int sd_stat_ctime(const char* path, time_t* time)
 	{
 		return statret;
 	}
-	*time=astat.st_ctime;
+	*time=astat.st_mtime;
 	return statret;
 }
-#endif
+
 
 

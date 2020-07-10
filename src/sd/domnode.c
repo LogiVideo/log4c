@@ -17,12 +17,13 @@ static const char version[] = "$Id$";
 #include "malloc.h"
 #include "error.h"
 #include "domnode.h"
+#include "stringutil.h"
 
 /* TODO: generic format support */
 #include "domnode-xml.h"
 
 /******************************************************************************/
-extern sd_domnode_t* __sd_domnode_new(const char* a_name, const char* a_value,
+SD_API sd_domnode_t* __sd_domnode_new(const char* a_name, const char* a_value,
 				      int is_elem)
 {
     sd_domnode_t* this;
@@ -38,7 +39,7 @@ extern sd_domnode_t* __sd_domnode_new(const char* a_name, const char* a_value,
 }
 
 /******************************************************************************/
-extern sd_domnode_t* sd_domnode_new(const char* a_name, const char* a_value)
+SD_API sd_domnode_t* sd_domnode_new(const char* a_name, const char* a_value)
 {
     return __sd_domnode_new(a_name, a_value, 1);
 }
@@ -64,7 +65,7 @@ static void domnode_clear(sd_domnode_t* this)
 }
 
 /******************************************************************************/
-extern void sd_domnode_delete(sd_domnode_t* this)
+SD_API void sd_domnode_delete(sd_domnode_t* this)
 {
     if (!this)
 	return;
@@ -87,7 +88,7 @@ static void domnode_update(sd_domnode_t* this, sd_domnode_t* a_node)
 }
 
 /******************************************************************************/
-extern int sd_domnode_fread(sd_domnode_t* this, FILE* a_stream)
+SD_API int sd_domnode_fread(sd_domnode_t* this, FILE* a_stream)
 {
     int ret;
     sd_domnode_t* node;
@@ -100,7 +101,7 @@ extern int sd_domnode_fread(sd_domnode_t* this, FILE* a_stream)
 }
 
 /******************************************************************************/
-extern int sd_domnode_read(sd_domnode_t* this, const char* a_buffer,
+SD_API int sd_domnode_read(sd_domnode_t* this, const char* a_buffer,
 			   size_t a_size)
 {
     int ret;
@@ -114,7 +115,7 @@ extern int sd_domnode_read(sd_domnode_t* this, const char* a_buffer,
 }
 
 /******************************************************************************/
-extern int sd_domnode_write(sd_domnode_t* this, char** a_buffer,
+SD_API int sd_domnode_write(sd_domnode_t* this, char** a_buffer,
 			    size_t* a_size)
 {
     /* TODO: generic format support */
@@ -122,14 +123,14 @@ extern int sd_domnode_write(sd_domnode_t* this, char** a_buffer,
 }
 
 /******************************************************************************/
-extern int sd_domnode_fwrite(const sd_domnode_t* this, FILE* a_stream)
+SD_API int sd_domnode_fwrite(const sd_domnode_t* this, FILE* a_stream)
 {
     /* TODO: generic format support */
     return __sd_domnode_xml_fwrite(this, a_stream);
 }
 
 /******************************************************************************/
-extern int sd_domnode_load(sd_domnode_t* this, const char* a_filename)
+SD_API int sd_domnode_load(sd_domnode_t* this, const char* a_filename)
 {
     FILE* fp;
     int   ret = 0;
@@ -144,7 +145,7 @@ extern int sd_domnode_load(sd_domnode_t* this, const char* a_filename)
 }
 
 /******************************************************************************/
-extern int sd_domnode_store(const sd_domnode_t* this, const char* afilename)
+SD_API int sd_domnode_store(const sd_domnode_t* this, const char* afilename)
 {
     FILE* fp;
     int   ret = 0;
@@ -159,7 +160,7 @@ extern int sd_domnode_store(const sd_domnode_t* this, const char* afilename)
 }
 
 /******************************************************************************/
-extern sd_domnode_t* sd_domnode_search(const sd_domnode_t* this,
+SD_API sd_domnode_t* sd_domnode_search(const sd_domnode_t* this,
 				       const char* a_name)
 {
     sd_list_iter_t* i;
@@ -192,7 +193,7 @@ extern sd_domnode_t* sd_domnode_search(const sd_domnode_t* this,
 }
 
 /******************************************************************************/
-extern sd_domnode_t* sd_domnode_attrs_put(sd_domnode_t* this,
+SD_API sd_domnode_t* sd_domnode_attrs_put(sd_domnode_t* this,
 					  sd_domnode_t* a_attr)
 {
     sd_list_iter_t* i;
@@ -207,7 +208,7 @@ extern sd_domnode_t* sd_domnode_attrs_put(sd_domnode_t* this,
 }
 
 /******************************************************************************/
-extern sd_domnode_t* 
+SD_API sd_domnode_t* 
 sd_domnode_attrs_get(const sd_domnode_t* this, const char* a_name)
 {
     sd_list_iter_t* i;
@@ -227,7 +228,34 @@ sd_domnode_attrs_get(const sd_domnode_t* this, const char* a_name)
 }
 
 /******************************************************************************/
-extern sd_domnode_t* 
+SD_API sd_domnode_t* 
+sd_domnode_attrs_get_expanded(sd_domnode_t* this, const char* a_name)
+{
+    sd_list_iter_t* i;
+
+    if (!this || !this->attrs || !a_name || !*a_name)
+	return 0;
+
+    for (i = sd_list_begin(this->attrs); i != sd_list_end(this->attrs); 
+	 i = sd_list_iter_next(i)) {
+	sd_domnode_t* node = i->data;
+	
+	if (strcmp(node->name, a_name) == 0) {
+	    const char *expanded_value = expand_variables(node->value);
+	    if(expanded_value) {
+		const char *old_value = node->value;
+		node->value = expanded_value;
+		free((void *)old_value);
+	    }
+	    return node;
+	}
+    }
+
+    return 0;
+}
+
+/******************************************************************************/
+SD_API sd_domnode_t* 
 sd_domnode_attrs_remove(sd_domnode_t* this, const char* a_name)
 {
     sd_list_iter_t* i;

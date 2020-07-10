@@ -10,7 +10,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
-#include <sd/defs.h>
+#include "defs.h"
 
 /**
  * @file malloc.h
@@ -20,14 +20,14 @@ __SD_BEGIN_DECLS
 
 typedef void (*sd_malloc_handler_t)();
 
-extern sd_malloc_handler_t sd_malloc_set_handler(void (*a_handler)());
+SD_API sd_malloc_handler_t sd_malloc_set_handler(void (*a_handler)());
 
 #ifndef __SD_DEBUG__
 
-extern void *sd_malloc(size_t n);
-extern void *sd_calloc(size_t n, size_t s);
-extern void *sd_realloc(void *p, size_t n);
-extern char *sd_strdup (const char *__str);
+SD_API void *sd_malloc(size_t n);
+SD_API void *sd_calloc(size_t n, size_t s);
+SD_API void *sd_realloc(void *p, size_t n);
+SD_API char *sd_strdup (const char *__str);
 
 #else
 

@@ -66,7 +66,7 @@
 
 /* end standard C headers. */
 
-#include <sd/sd_xplatform.h>
+#include "sd_xplatform.h"
 
 /* flex integer type definitions */
 

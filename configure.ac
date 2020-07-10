@@ -3,8 +3,9 @@
 AC_PREREQ(2.57)
 
 AC_INIT
-AC_CONFIG_SRCDIR([configure.in])
+AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_AUX_DIR(config)
+AC_CONFIG_MACRO_DIR(config)
 AM_CONFIG_HEADER(src/config.h)
 
 LOG4C_MAJOR_VERSION=1
@@ -37,6 +38,7 @@ AC_DEFINE(_GNU_SOURCE,1,"POSIXandGNU extensions")
 #.
 AC_PROG_YACC
 AC_PROG_CC
+AC_PROG_CXX
 AC_PROG_CPP
 AM_PROG_LEX
 AC_PROG_AWK
@@ -126,9 +128,9 @@ AC_STRUCT_TM
 
 # Checks for library functions.
 AC_FUNC_ALLOCA
-AC_FUNC_MALLOC
+#AC_FUNC_MALLOC
 AC_FUNC_MMAP
-AC_FUNC_REALLOC
+#AC_FUNC_REALLOC
 AC_FUNC_UTIME_NULL
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([gettimeofday memset munmap nl_langinfo strdup strerror strncasecmp strrchr strstr utime sbrk])

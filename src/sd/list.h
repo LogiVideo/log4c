@@ -17,7 +17,7 @@
  */
 
 #include <stddef.h>
-#include <sd/defs.h>
+#include "defs.h"
 
 __SD_BEGIN_DECLS
 
@@ -49,30 +49,30 @@ typedef unsigned int (*sd_list_func_t)(void* a_data, void* a_userdata);
  * @param a_capacity initial number of preallocated iterators
  * @return the list object.
  */
-extern sd_list_t* sd_list_new(size_t a_capacity);
+SD_API sd_list_t* sd_list_new(size_t a_capacity);
 
 /**
  * Destroys the list object.
  * @todo need a function parameter to destroy list elements.
  */
-extern void sd_list_delete(sd_list_t* a_this);
+SD_API void sd_list_delete(sd_list_t* a_this);
 
 /**
  * Adds the given_data at the head of the list.
  */
-extern sd_list_iter_t* sd_list_prepend(sd_list_t* a_this, void* a_data);
+SD_API sd_list_iter_t* sd_list_prepend(sd_list_t* a_this, void* a_data);
 
 /**
  * Adds the given data at the tail of the list.
  */
-extern sd_list_iter_t* sd_list_append(sd_list_t* a_this, void* a_data);
+SD_API sd_list_iter_t* sd_list_append(sd_list_t* a_this, void* a_data);
 
 /**
  * Looks for the iterator associated to the given data in the list object.
  * @param a_data the data to find
  * @return a pointer to the found iterator or NULL.
  */
-extern sd_list_iter_t* sd_list_lookup(sd_list_t* a_this, void* a_data);
+SD_API sd_list_iter_t* sd_list_lookup(sd_list_t* a_this, void* a_data);
 
 /**
  * Looks for the iterator associated to the given data in the list object and
@@ -80,7 +80,7 @@ extern sd_list_iter_t* sd_list_lookup(sd_list_t* a_this, void* a_data);
  * @param a_data the data to find/add
  * @return a pointer to the found iterator or NULL.
  */
-extern sd_list_iter_t* sd_list_lookadd(sd_list_t* a_this, void* a_data);
+SD_API sd_list_iter_t* sd_list_lookadd(sd_list_t* a_this, void* a_data);
 
 /**
  * Adds the given data into the list object. If the data already exists,
@@ -89,7 +89,7 @@ extern sd_list_iter_t* sd_list_lookadd(sd_list_t* a_this, void* a_data);
  * @param a_data the data to add
  * @return a pointer to the created or found iterator.
  */
-extern sd_list_iter_t* sd_list_add(sd_list_t* a_this, void* a_data);
+SD_API sd_list_iter_t* sd_list_add(sd_list_t* a_this, void* a_data);
 
 /**
  * Applies the given function to all list elements, starting from the
@@ -99,7 +99,7 @@ extern sd_list_iter_t* sd_list_add(sd_list_t* a_this, void* a_data);
  * @param a_data the data to add
  * @return a pointer to the created iterator.
  */
-extern sd_list_iter_t* sd_list_sortadd(sd_list_t* a_this,
+SD_API sd_list_iter_t* sd_list_sortadd(sd_list_t* a_this,
 				       sd_list_func_t a_func,
 				       void* a_data);
 
@@ -107,12 +107,12 @@ extern sd_list_iter_t* sd_list_sortadd(sd_list_t* a_this,
  * Removes an iterator from the list object.
  * @param a_data the data associated to the iterator.
  */
-extern int sd_list_del(sd_list_t* a_this, void* a_data);
+SD_API int sd_list_del(sd_list_t* a_this, void* a_data);
 
 /**
  * clears the list object.
  */
-extern void sd_list_clear(sd_list_t* a_this);
+SD_API void sd_list_clear(sd_list_t* a_this);
 
 /**
  * Calls \a a_func for each element of the list object, as long as \a a_func
@@ -120,7 +120,7 @@ extern void sd_list_clear(sd_list_t* a_this);
  * @param a_func the "foreach" function.
  * @param a_data the user data passed to \a a_func.
  */
-extern void sd_list_foreach(sd_list_t* a_this, sd_list_func_t a_func,
+SD_API void sd_list_foreach(sd_list_t* a_this, sd_list_func_t a_func,
 			    void* a_userdata);
 
 /**
@@ -130,59 +130,59 @@ extern void sd_list_foreach(sd_list_t* a_this, sd_list_func_t a_func,
  * @param a_func the "foreach" function.
  * @param a_data the user data passed to \a a_func.
  */
-extern void sd_list_rforeach(sd_list_t* a_this, sd_list_func_t a_func,
+SD_API void sd_list_rforeach(sd_list_t* a_this, sd_list_func_t a_func,
 			     void* a_userdata);
 
 /**
  * Gets the number of iterators.
  */
-extern size_t sd_list_get_nelem(sd_list_t* a_this);
+SD_API size_t sd_list_get_nelem(sd_list_t* a_this);
 
 /**
  * Gets the iterator pointing to the first element of the list.
  */
-extern sd_list_iter_t* sd_list_begin(sd_list_t* a_this);
+SD_API sd_list_iter_t* sd_list_begin(sd_list_t* a_this);
 
 /**
  * Gets the past-the-last-element iterator of the list.
  */
-extern sd_list_iter_t* sd_list_end(sd_list_t* a_this);
+SD_API sd_list_iter_t* sd_list_end(sd_list_t* a_this);
 
 /**
  * Gets the iterator pointing to the last element of the list.
  */
-extern sd_list_iter_t* sd_list_rbegin(sd_list_t* a_this);
+SD_API sd_list_iter_t* sd_list_rbegin(sd_list_t* a_this);
 
 /**
  * Gets the before-the-first-element iterator of the list.
  */
-extern sd_list_iter_t* sd_list_rend(sd_list_t* a_this);
+SD_API sd_list_iter_t* sd_list_rend(sd_list_t* a_this);
 
 /**
  * Gets a pointer to the next iterator.
  */
-extern sd_list_iter_t* sd_list_iter_next(sd_list_iter_t* a_this);
+SD_API sd_list_iter_t* sd_list_iter_next(sd_list_iter_t* a_this);
 
 /**
  * Gets a pointer to the previous iterator.
  */
-extern sd_list_iter_t* sd_list_iter_prev(sd_list_iter_t* a_this);
+SD_API sd_list_iter_t* sd_list_iter_prev(sd_list_iter_t* a_this);
 
 /**
  * Deletes the iterator from the list.
  */
-extern void sd_list_iter_del(sd_list_iter_t* a_this);
+SD_API void sd_list_iter_del(sd_list_iter_t* a_this);
 
 /**
  * Deletes the iterator from the list.
  */
-extern void sd_list_iter_del(sd_list_iter_t* a_this);
+SD_API void sd_list_iter_del(sd_list_iter_t* a_this);
 
 /**
  * Creates a new iterator and inserts it before @a a_this.
  * @param a_data the data associated to the iterator.
  */
-extern sd_list_iter_t* sd_list_iter_insert(sd_list_iter_t* a_this,
+SD_API sd_list_iter_t* sd_list_iter_insert(sd_list_iter_t* a_this,
 					   void* a_data);
 
 __SD_END_DECLS

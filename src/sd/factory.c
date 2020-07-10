@@ -7,12 +7,12 @@ static const char version[] = "$Id$";
 * See the COPYING file for the terms of usage and distribution.
 */
 
-#include <sd/factory.h>
+#include "factory.h"
 #include <stdlib.h>
 #include <string.h>
-#include <sd/malloc.h>
-#include <sd/hash.h>
-#include <sd/error.h>
+#include "malloc.h"
+#include "hash.h"
+#include "error.h"
 
 struct __sd_factory
 {

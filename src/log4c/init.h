@@ -11,6 +11,8 @@
 #include <log4c/defs.h>
 #include <stdio.h>
 
+__LOG4C_BEGIN_DECLS
+
 /**
  * @file init.h
  *
@@ -51,5 +53,7 @@ LOG4C_API void log4c_dump_all_types(FILE *fp);
  * @param stream to write t
  */
 LOG4C_API void log4c_dump_all_instances(FILE *fp);
+
+__LOG4C_END_DECLS
 
 #endif

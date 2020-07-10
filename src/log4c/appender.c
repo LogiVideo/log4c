@@ -32,6 +32,8 @@ struct __log4c_appender
 
 sd_factory_t* log4c_appender_factory = NULL;
 
+extern int reread_flag;
+
 /**
 * @bug log4c_appender_type hash is not freed in destructor
 */
@@ -58,7 +60,7 @@ extern void log4c_appender_types_print(FILE *fp)
   {
     fprintf(fp, "'%s' ",((log4c_appender_type_t *)(i->data))->name );
   }
-  fprintf(fp, "\n");
+  fprintf(fp, "\r\n");
 }
 
 /*******************************************************************************/
@@ -220,27 +222,48 @@ extern void* log4c_appender_set_udata(log4c_appender_t* this, void* a_udata)
 }
 
 /*******************************************************************************/
+extern int log4c_appender_init(
+  log4c_appender_t*			this,
+  const log4c_appender_init_data_t*	init_data)
+{
+  if (!this || !this->app_type)
+    return -1;
+
+  if(!this->app_type->init)
+    return 0;
+
+  return this->app_type->init(this, init_data);
+}
+
+/*******************************************************************************/
 extern int log4c_appender_open(log4c_appender_t* this)
 {
   int rc = 0;
   
-  if (!this)
-    return -1;
-  
-  if (this->app_isopen)
-    return 0;
-  
-  if (!this->app_type)
-    return 0;
+  if (reread_flag == 0)
+  {
+	  if (!this)
+		return -1;
+	  
+	  if (this->app_isopen)
+		return 0;
+	  
+	  if (!this->app_type)
+		return 0;
 
-  if (!this->app_type->open)
-    return 0;
+	  if (!this->app_type->open)
+		return 0;
 
-  if (this->app_type->open(this) == -1){
-    rc = -1;
+	  if (this->app_type->open(this) == -1){
+		rc = -1;
+	  }
+	  if (!rc) {
+		this->app_isopen++;
+	  }
   }
-  if (!rc) {
-    this->app_isopen++;
+  else
+  {
+	  this->app_type->open(this);
   }
 
   return rc;
@@ -264,9 +287,22 @@ extern int log4c_appender_append(
   if (!this->app_type->append)
     return 0;
   
-  if (!this->app_isopen)
+  if (!this->app_isopen || reread_flag==1)
+  {
     if (log4c_appender_open(this) == -1)
-     return -1;
+	{
+		if (reread_flag == 1)
+		{
+			reread_flag = 0;
+		} 
+		return -1;
+	}
+
+	if (reread_flag == 1)
+	{
+		reread_flag = 0;
+	}
+  }
 	
     if ( (a_event->evt_rendered_msg = 
       log4c_layout_format(this->app_layout, a_event)) == NULL)

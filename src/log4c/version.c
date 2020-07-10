@@ -18,6 +18,8 @@ const int log4c_major_version = LOG4C_MAJOR_VERSION;
 const int log4c_minor_version = LOG4C_MINOR_VERSION;
 const int log4c_micro_version = LOG4C_MICRO_VERSION;
 
+#define VERSION "1.2.1"
+
 /*******************************************************************************/
 extern const char* log4c_version(void)
 {

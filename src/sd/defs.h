@@ -16,4 +16,14 @@
 # define __SD_END_DECLS
 #endif
 
+#if (defined(_WIN32) || defined(_WIN64))
+#ifdef SD_EXPORTS
+# define SD_API extern
+#else
+# define SD_API extern
+#endif
+#else
+# define SD_API extern
+#endif
+
 #endif

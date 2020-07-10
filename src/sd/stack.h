@@ -18,7 +18,7 @@
  */
 
 #include <stddef.h>
-#include <sd/defs.h>
+#include "defs.h"
 
 __SD_BEGIN_DECLS
 
