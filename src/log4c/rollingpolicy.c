@@ -130,7 +130,7 @@ LOG4C_API int log4c_rollingpolicy_init(log4c_rollingpolicy_t *this, rollingfile_
   
   int rc = 0;
   
-  if (!this)
+  if (!this || !rfup)
     return -1;
   
   this->policy_rfudatap = rfup;
