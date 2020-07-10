@@ -36,7 +36,7 @@ static const char* dated_format(
 	localtime_r(&tv.tv_sec, &tm);
 
 	//gmtime_r(&a_event->evt_timestamp.tv_sec, &tm);
-    res = snprintf(buffer, sizeof(buffer), "%04d%02d%02d %02d:%02d:%02d.%03ld %-8s %s- %s\r\n",
+    res = snprintf(buffer, sizeof(buffer), "%04d%02d%02d %02d:%02d:%02d.%03ld %-8s %s- %s\n",
              tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
              tm.tm_hour, tm.tm_min, tm.tm_sec,
              a_event->evt_timestamp.tv_usec / 1000,
@@ -51,7 +51,7 @@ static const char* dated_format(
 
 	if ( FileTimeToSystemTime(&fileTimeLocal, &stime)){
     //if ( FileTimeToSystemTime(&a_event->evt_timestamp, &stime)){
-    res = snprintf(buffer, sizeof(buffer), "%04d%02d%02d %02d:%02d:%02d.%03ld %-8s %s- %s\r\n",
+    res = snprintf(buffer, sizeof(buffer), "%04d%02d%02d %02d:%02d:%02d.%03ld %-8s %s- %s\n",
              stime.wYear, stime.wMonth , stime.wDay,
              stime.wHour, stime.wMinute, stime.wSecond,
              stime.wMilliseconds,
@@ -63,10 +63,9 @@ static const char* dated_format(
 	/* If the output was truncated ellipsize the message and line-terminate it */
 	if(res >= sizeof(buffer))
 	{
-		buffer[sizeof(buffer) - 6] =
 		buffer[sizeof(buffer) - 5] =
-		buffer[sizeof(buffer) - 4] = '.';
-		buffer[sizeof(buffer) - 3] = '\r';
+		buffer[sizeof(buffer) - 4] =
+		buffer[sizeof(buffer) - 3] = '.';
 		buffer[sizeof(buffer) - 2] = '\n';
 		buffer[sizeof(buffer) - 1] = '\0';
 	}
@@ -79,4 +78,3 @@ const log4c_layout_type_t log4c_layout_type_dated = {
     "dated",
     dated_format,
 };
-

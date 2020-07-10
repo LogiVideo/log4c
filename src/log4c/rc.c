@@ -402,7 +402,7 @@ extern int log4c_rc_load(log4c_rc_t* this, const char* a_filename)
 	sd_domnode_t*   node = NULL;        
 	sd_domnode_t*   root_node = NULL;
 
-	sd_debug("parsing file '%s'\r\n", a_filename);
+	sd_debug("parsing file '%s'\n", a_filename);
 
 	if (!this)
 		return -1;

@@ -47,7 +47,7 @@ static const char* ISO8601_format(const log4c_layout_t * a_layout,
 		localtime_r(&tv.tv_sec, &tm);
 
 		res = snprintf(buffer, bufferSize,
-			"%04d-%02d-%02dT%02d:%02d:%02d.%03d %-8s %-60s:   %s\r\n",
+			"%04d-%02d-%02dT%02d:%02d:%02d.%03d %-8s %-60s:   %s\n",
 			tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
 			tm.tm_hour, tm.tm_min, tm.tm_sec,
 			tv.tv_usec / 1000,
@@ -67,7 +67,7 @@ static const char* ISO8601_format(const log4c_layout_t * a_layout,
 		 *       terminated if the output was truncated.
 		 */
 		res = snprintf(buffer, bufferSize,
-			"%04d-%02d-%02dT%02d:%02d:%02d.%03ld %-8s %-60s:   %s\r\n",
+			"%04d-%02d-%02dT%02d:%02d:%02d.%03ld %-8s %-60s:   %s\n",
 			stime.wYear, stime.wMonth , stime.wDay,
 			stime.wHour, stime.wMinute, stime.wSecond,
 			stime.wMilliseconds,
@@ -78,17 +78,16 @@ static const char* ISO8601_format(const log4c_layout_t * a_layout,
 		/* If the output was truncated ellipsize the message and line-terminate it */
 		if(res >= bufferSize)
 		{
-			buffer[bufferSize - 6] =
 			buffer[bufferSize - 5] =
-			buffer[bufferSize - 4] = '.';
-			buffer[bufferSize - 3] = '\r';
+			buffer[bufferSize - 4] =
+			buffer[bufferSize - 3] = '.';
 			buffer[bufferSize - 2] = '\n';
 			buffer[bufferSize - 1] = '\0';
 		}
 	}
 	else
 	{
-		snprintf(buffer, bufferSize, "\r\n");
+		snprintf(buffer, bufferSize, "\n");
 	}
 
 	return buffer;
@@ -99,4 +98,3 @@ const log4c_layout_type_t log4c_layout_type_ISO8601 = {
     "ISO8601",
     ISO8601_format,
 };
-

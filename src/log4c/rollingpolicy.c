@@ -52,7 +52,7 @@ extern void log4c_rollingpolicy_types_print(FILE *fp)
   {
     fprintf(fp, "'%s' ",((log4c_rollingpolicy_type_t *)(i->data))->name );
   }
-  fprintf(fp, "\r\n");
+  fprintf(fp, "\n");
 }
 
 /*******************************************************************************/
