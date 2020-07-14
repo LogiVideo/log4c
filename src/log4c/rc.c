@@ -12,6 +12,9 @@ static const char version[] = "$Id$";
 #include "config.h"
 #endif
 
+// for strverscmp in string.h:
+#define _GNU_SOURCE
+
 #include <log4c/rc.h>
 #include <log4c/category.h>
 #include <log4c/appender.h>
@@ -423,8 +426,8 @@ extern int log4c_rc_load(log4c_rc_t* this, const char* a_filename)
 
 	/* Check configuration file revision */
 	if ( (node = sd_domnode_attrs_get(root_node, "version")) != NULL)
-		if (strcmp(log4c_version(), node->value)) {
-			sd_error("version mismatch: %s != %s", log4c_version(), node->value);
+		if (strverscmp(log4c_version(), node->value) < 0) {
+			sd_error("version mismatch: library(%s) < config(%s)", log4c_version(), node->value);
 			sd_domnode_delete(root_node);
 			return -1;
 		}
