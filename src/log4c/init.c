@@ -17,6 +17,7 @@ static const char version[] = "$Id$";
 #include <log4c/layout.h>
 #include <log4c/rollingpolicy.h>
 #include <log4c/rc.h>
+#include <log4c/version.h>
 #include <sd/error.h>
 #include <sd/sprintf.h>
 #include <sd/factory.h>
@@ -138,7 +139,7 @@ extern int log4c_init(void)
 	size_t i;
 	int ret = 0;
 
-	sd_debug("log4c_init[");
+	sd_debug("log4c_init<%s>[", log4c_version());
 
 #ifndef _WIN32
 	tzset();
