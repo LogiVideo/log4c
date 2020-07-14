@@ -45,7 +45,7 @@ int sd_error(const char *fmt, ...)
     va_list args;
     int r;
 
-    if (!getenv("SD_ERROR"))
+    if (!getenv("SD_ERROR") && !getenv("SD_DEBUG"))
 	return 0;
 
     r = fprintf(stderr, "[ERROR] ");
