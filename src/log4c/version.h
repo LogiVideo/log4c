@@ -23,15 +23,15 @@ __LOG4C_BEGIN_DECLS
 /**
  * constant macro holding the major version of log4c
  **/
-#define LOG4C_MAJOR_VERSION 1
+#define LOG4C_MAJOR_VERSION 2
 /**
  * constant macro holding the minor version of log4c
  **/
-#define LOG4C_MINOR_VERSION 2
+#define LOG4C_MINOR_VERSION 0
 /**
  * constant macro holding the micro version of log4c
  **/
-#define LOG4C_MICRO_VERSION 1
+#define LOG4C_MICRO_VERSION 2
 
 /**
  * constant variable holding the major version of log4c
